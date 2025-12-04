@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Excel = Microsoft.Office.Interop.Excel;
+using ClosedXML.Excel;
 
 
 namespace NguyenVanTam_231230895_LTTQ
@@ -148,51 +148,53 @@ namespace NguyenVanTam_231230895_LTTQ
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-
-            Excel.Application exApp = new Excel.Application();
-            Excel.Workbook exBook = exApp.Workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
-            Excel.Worksheet exSheet = (Excel.Worksheet)exBook.Worksheets[1];
-            Excel.Range range = (Excel.Range)exSheet.Cells[1, 1];
-
-            range.Range["B2"].Font.Size = 25;
-            range.Range["B2"].Font.Name = "Times New Roman";
-            range.Range["B2"].Font.Color = Color.Red;
-            range.Range["B2"].Value = "DANH SÁCH SÁCH";
-
-            range.Range["A4:F4"].Font.Size = 13;
-            range.Range["A4:F4"].Font.Name = "Times New Roman";
-            range.Range["A4:F4"].Font.Bold = true;
-            range.Range["A4:F4"].Font.Color = Color.Black;
-
-            range.Range["A4"].Value = "Mã sách";
-            range.Range["B4"].Value = "Tên sách";
-            range.Range["C4"].Value = "Thể loại";
-            range.Range["D4"].Value = "Ảnh";
- 
-
-            int hang = 5;
-
-            for (int i = 0; i < dgvSach.Rows.Count - 1; i++)
+            using var save = new SaveFileDialog
             {
-                range.Range["A" + hang].Value = dgvSach.Rows[i].Cells[0].Value.ToString();
-                range.Range["B" + hang].Value = dgvSach.Rows[i].Cells[1].Value.ToString();
-                range.Range["C" + hang].Value = dgvSach.Rows[i].Cells[2].Value.ToString(); 
-                range.Range["D" + hang].Value = dgvSach.Rows[i].Cells[3].Value.ToString(); 
-                hang++;
+                Title = "Save Excel",
+                Filter = "(*.xlsx)|*.xlsx",
+                FileName = "DSSach.xlsx",
+                OverwritePrompt = true
+            };
+
+            if (save.ShowDialog() != DialogResult.OK)
+                return;
+
+            using var wb = new XLWorkbook();
+            var ws = wb.Worksheets.Add("DSSach");
+
+            var title = ws.Cell("B2");
+            title.Value = "DANH SÁCH SÁCH";
+            title.Style.Font.FontSize = 25;
+            title.Style.Font.Bold = true;
+            title.Style.Font.FontColor = XLColor.Red;
+
+            ws.Cell("A4").Value = "Mã sách";
+            ws.Cell("B4").Value = "Tên sách";
+            ws.Cell("C4").Value = "Thể loại";
+            ws.Cell("D4").Value = "Ảnh";
+
+            var header = ws.Range("A4:D4");
+            header.Style.Font.Bold = true;
+            header.Style.Font.FontSize = 13;
+            header.Style.Font.FontColor = XLColor.Black;
+
+            int row = 5;
+            for (int i = 0; i < dgvSach.Rows.Count; i++)
+            {
+                var r = dgvSach.Rows[i];
+                if (r.IsNewRow) continue;
+
+                ws.Cell(row, 1).Value = r.Cells[0].Value?.ToString();
+                ws.Cell(row, 2).Value = r.Cells[1].Value?.ToString();
+                ws.Cell(row, 3).Value = r.Cells[3].Value?.ToString();
+                ws.Cell(row, 4).Value = r.Cells[2].Value?.ToString();
+                row++;
             }
 
-            exSheet.Name = "DSSach";
+            ws.ColumnsUsed().AdjustToContents();
+            wb.SaveAs(save.FileName);
 
-            exBook.Activate();
-
-            SaveFileDialog save = new SaveFileDialog();
-
-            if (save.ShowDialog() == DialogResult.OK)
-            {
-                exBook.SaveAs(save.FileName.ToString());
-            }
-
-            exApp.Quit();
+            MessageBox.Show("Xuất Excel thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
