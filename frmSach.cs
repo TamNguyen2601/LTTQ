@@ -106,7 +106,7 @@ namespace NguyenVanTam_231230895_LTTQ
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.InitialDirectory = Application.StartupPath;
-            ofd.Filter = "Ảnh (*.jpg;*.jpeg;*.png;*.gif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+            ofd.Filter = "(*.jpg;*.jpeg;*.png;*.gif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
 
 
             if (ofd.ShowDialog() == DialogResult.OK)
