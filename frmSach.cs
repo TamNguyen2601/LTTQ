@@ -18,7 +18,6 @@ namespace NguyenVanTam_231230895_LTTQ
         Database db = new Database();
         FillComboBox fillCb = new FillComboBox();
         string fileName = "";
-        string fullPath = "";
 
         public frmSach()
         {
@@ -51,7 +50,6 @@ namespace NguyenVanTam_231230895_LTTQ
             picSach.Image = null;
             txtAnh.Text = "";
             fileName = "";
-            fullPath = "";
         }
 
         private bool isValid()
@@ -112,8 +110,7 @@ namespace NguyenVanTam_231230895_LTTQ
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 picSach.Image = Image.FromFile(ofd.FileName);
-                fullPath = ofd.FileName;
-                fileName = Path.GetFileName(fullPath);
+                fileName = Path.GetFileName(ofd.FileName);
             }
         }
 
