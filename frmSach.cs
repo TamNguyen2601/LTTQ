@@ -32,7 +32,7 @@ namespace NguyenVanTam_231230895_LTTQ
 
         private void loadDgv()
         {
-            dgvSach.DataSource = db.ReadData("select s.MaSach,s.TenSach,s.Anh,t.TenTheLoai from tblSach s join tblTheLoai t on s.TheLoai=t.MaTheLoai");
+            dgvSach.DataSource = db.ReadData("select s.MaSach,s.TenSach,t.TenTheLoai,s.Anh from tblSach s join tblTheLoai t on s.TheLoai=t.MaTheLoai");
         }
 
         private void loadCombobox()
@@ -89,7 +89,7 @@ namespace NguyenVanTam_231230895_LTTQ
                     MessageBox.Show("Vui lòng nhập mã khác", "Thông báp", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                string insert = $@"insert into tblSach values('{txtMaSach.Text}',N'{txtTenSach.Text}','{cboTheLoai.SelectedValue}',N'{txtAnh.text}')";
+                string insert = $@"insert into tblSach values('{txtMaSach.Text}',N'{txtTenSach.Text}','{cboTheLoai.SelectedValue}',N'{txtAnh.Text}')";
                 db.UpdateData(insert);
 
                 loadDgv();
@@ -176,8 +176,8 @@ namespace NguyenVanTam_231230895_LTTQ
             {
                 range.Range["A" + hang].Value = dgvSach.Rows[i].Cells[0].Value.ToString();
                 range.Range["B" + hang].Value = dgvSach.Rows[i].Cells[1].Value.ToString();
-                range.Range["C" + hang].Value = dgvSach.Rows[i].Cells[3].Value.ToString(); 
-                range.Range["D" + hang].Value = dgvSach.Rows[i].Cells[2].Value.ToString(); 
+                range.Range["C" + hang].Value = dgvSach.Rows[i].Cells[2].Value.ToString(); 
+                range.Range["D" + hang].Value = dgvSach.Rows[i].Cells[3].Value.ToString(); 
                 hang++;
             }
 
@@ -214,8 +214,8 @@ namespace NguyenVanTam_231230895_LTTQ
 
             txtMaSach.Text = dgvSach.CurrentRow.Cells[0].Value.ToString();
             txtTenSach.Text = dgvSach.CurrentRow.Cells[1].Value.ToString();
-            cboTheLoai.Text = dgvSach.CurrentRow.Cells[3].Value.ToString();
-            txtAnh.Text = dgvSach.CurrentRow.Cells[2].Value.ToString();
+            cboTheLoai.Text = dgvSach.CurrentRow.Cells[2].Value.ToString();
+            txtAnh.Text = dgvSach.CurrentRow.Cells[3].Value.ToString();
         }
     }
 }
