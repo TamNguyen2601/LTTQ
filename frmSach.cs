@@ -106,6 +106,8 @@ namespace NguyenVanTam_231230895_LTTQ
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.InitialDirectory = Application.StartupPath;
+            ofd.Filter = "Ảnh (*.jpg;*.jpeg;*.png;*.gif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -117,12 +119,15 @@ namespace NguyenVanTam_231230895_LTTQ
 
         private void btnSua_Click(object sender, EventArgs e)
         {
+            if (isValid())
+            {
             string update = $@"update tblSach set TenSach=N'{txtTenSach.Text}',TheLoai='{cboTheLoai.SelectedValue}',Anh=N'{fileName}' where MaSach='{txtMaSach.Text}'";
             db.UpdateData(update);
 
             loadDgv();
             refresh();
             defaultButton();
+            }
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
