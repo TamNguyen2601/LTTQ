@@ -81,12 +81,15 @@ namespace NguyenVanTam_231230895_LTTQ
 
         private void btnSua_Click(object sender, EventArgs e)
         {
+            if (isValid())
+            {
             string update = $@"update tblTheLoai set TenTheLoai=N'{txtTenTheLoai.Text}' where MaTheLoai='{txtMaTheLoai.Text}'";
             db.UpdateData(update);
 
             loadDgv();
             refresh();
             defaultButton();
+            }
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
