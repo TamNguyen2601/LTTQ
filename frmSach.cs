@@ -17,7 +17,6 @@ namespace NguyenVanTam_231230895_LTTQ
     {
         Database db = new Database();
         FillComboBox fillCb = new FillComboBox();
-        string fileName = "";
 
         public frmSach()
         {
@@ -49,7 +48,6 @@ namespace NguyenVanTam_231230895_LTTQ
             cboTheLoai.SelectedIndex = -1;
             picSach.Image = null;
             txtAnh.Text = "";
-            fileName = "";
         }
 
         private bool isValid()
@@ -91,7 +89,7 @@ namespace NguyenVanTam_231230895_LTTQ
                     MessageBox.Show("Vui lòng nhập mã khác", "Thông báp", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                string insert = $@"insert into tblSach values('{txtMaSach.Text}',N'{txtTenSach.Text}','{cboTheLoai.SelectedValue}',N'{fileName}')";
+                string insert = $@"insert into tblSach values('{txtMaSach.Text}',N'{txtTenSach.Text}','{cboTheLoai.SelectedValue}',N'{txtAnh.text}')";
                 db.UpdateData(insert);
 
                 loadDgv();
@@ -110,7 +108,8 @@ namespace NguyenVanTam_231230895_LTTQ
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 picSach.Image = Image.FromFile(ofd.FileName);
-                fileName = Path.GetFileName(ofd.FileName);
+                string fileName = Path.GetFileName(ofd.FileName);
+                txtAnh.Text = fileName;
             }
         }
 
@@ -118,7 +117,7 @@ namespace NguyenVanTam_231230895_LTTQ
         {
             if (isValid())
             {
-            string update = $@"update tblSach set TenSach=N'{txtTenSach.Text}',TheLoai='{cboTheLoai.SelectedValue}',Anh=N'{fileName}' where MaSach='{txtMaSach.Text}'";
+            string update = $@"update tblSach set TenSach=N'{txtTenSach.Text}',TheLoai='{cboTheLoai.SelectedValue}',Anh=N'{txtAnh.Text}' where MaSach='{txtMaSach.Text}'";
             db.UpdateData(update);
 
             loadDgv();
